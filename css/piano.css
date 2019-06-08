@@ -1,0 +1,132 @@
+* {
+
+  box-sizing: border-box;
+}
+
+#piano
+
+{
+
+  display: flex;
+  border-top-style: solid;  
+  border-bottom-style: solid;
+  border-left-style: solid;
+  border-radius: 3px;
+  background-color: black;
+   
+}
+
+.piano_octave
+
+{
+ 
+  height: 300px;
+  width: 25%;
+  display: grid;
+   
+  grid-template-columns: repeat(31, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+  background-color: black;
+                       
+}
+
+.white_key
+
+{
+
+  background-color: rgba(255, 255, 255, 0.925);
+  grid-column: span 3;
+  grid-row: span 6; 
+  border-right-style: solid;
+  border-radius: 3px;
+  background-color: white;
+
+  
+}
+
+.border_adjust_right
+
+{
+
+  margin-right: -35%;
+  
+
+}
+
+.border_adjust_left
+
+{
+
+  margin-left: -35%;
+
+}
+
+.black_key
+
+{
+
+  background-color: black;
+  grid-column: span 2;
+  grid-row: span 4; 
+  z-index: 1;
+
+}
+
+#test_zone {
+
+  display: flex;
+  padding: 40px;
+  font: 40px;
+  font-weight: bold;
+
+
+}
+
+.button 
+
+{
+
+  border-radius: 10px;
+  padding: 15px;
+  font-weight: bold;
+  background-color: rgb(172, 214, 55);
+
+}
+
+.heartbeat {
+	animation: heartbeat 1.5s ease-in-out alternate both;
+}
+
+
+@keyframes heartbeat {
+
+  from {
+            transform: scale(1);
+            transform-origin: center center;
+            animation-timing-function: ease-out;
+            background-color: rgb(103, 175, 103);
+  }
+
+  10% {
+            transform: scale(0.91);
+            animation-timing-function: ease-in;
+            background-color: white;
+      }
+
+  17% {
+            transform: scale(0.98);
+            animation-timing-function: ease-out;
+  }
+
+  33% {
+            transform: scale(0.87);
+            animation-timing-function: ease-in;
+            background-color: rgb(103, 175, 103);
+  }
+
+  45% {
+            transform: scale(1);
+            animation-timing-function: ease-out;
+            background-color: white;
+  }
+}
