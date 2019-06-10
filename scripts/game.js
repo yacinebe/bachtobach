@@ -1,17 +1,31 @@
-//Global Declarations 
+//Global Declarations
 
-var synth, part, notesPlayed;
+var pianoSampler, part, notesPlayed;
+var blackKey = Tone.Time('+4n');
+var halfBlackKey = Tone.Time('+8n');
+var quarterBlackKey = Tone.Time('+16n');
+var keyLogger = [];
+var currentLevel = 1;
+var pieceIndex = 0;
 
-//Dom functions
+Tone.Transport.bpm.value = 140;
+
+//Dom initialization
 
 document.addEventListener("DOMContentLoaded", () => {
 
-  displayPiano(4);
-  document.getElementById("piano").addEventListener("click", reactToKeyPress);
-  document.getElementById("start_button").addEventListener("click", initializeSound);
+  displayPiano(5);
+  document.getElementById("piano").addEventListener("mousedown", reactToMouseDown);
+  document.getElementById("piano").addEventListener("mouseup", reactToMouseUp);
+  // document.getElementById("start_button").addEventListener("click", initializeSound);
   document.getElementById("piece_button").addEventListener("click", playPiece);
 
+  pianoSampler = new Tone.Sampler(pianoSample, () => console.log("All samples loaded")).toMaster();
+  //  updateTime();
+
 });
+
+/*------------------------------------------------------Dom-related functions ---------------------------------------------------------*/
 
 function displayPiano(numberOfOctaves, startKey, endKey) {
 
@@ -19,7 +33,7 @@ function displayPiano(numberOfOctaves, startKey, endKey) {
 
   let octaveContainer = '<div class="piano_octave"> </div>'
 
-  for (let counterOfOctaves = 0; counterOfOctaves <= numberOfOctaves; counterOfOctaves++) {
+  for (let counterOfOctaves = 1; counterOfOctaves <= numberOfOctaves; counterOfOctaves++) {
 
     newOctave = document.createElement("div");
     newOctave.classList.add("piano_octave");
@@ -34,59 +48,122 @@ function displayPiano(numberOfOctaves, startKey, endKey) {
 
 }
 
-function reactToKeyPress(evt) {
 
-  pressedKey = event.target;
-  flashKey(pressedKey);
-  playSound(convertNoteSyntax(event.target.id), "8n");
+function reactToMouseDown(evt) {
 
-  notePlayed = document.createElement("p");
-  notePlayed.textContent = ((pressedKey.className.includes("white_key")) || (pressedKey.className.includes("black_key"))) ? pressedKey.id : "";
+  pressedKey = evt.target;
+  playSound(convertNoteSyntax(evt.target.id));
+  compareNotesWithPiece(pressedKey.id, pieces[currentLevel]);
 
-  document.getElementById("test_zone").append(notePlayed);
+  //For debugging purposes
+  let keyPlayed = {};
+  keyPlayed.note = evt.target.id;
+  keyPlayed.duration = null;
+  keyPlayed.time = null;
+  keyLogger.push(keyPlayed);
 
 }
 
+function reactToMouseUp(evt) {
+
+  pressedKey = evt.target;
+  releaseSound();
+
+}
 
 function flashKey(key, color, timing) {
 
-  [...document.getElementsByClassName("heartbeat")].forEach(x => x.classList.remove("heartbeat"));
-  key.classList.toggle("heartbeat");
+  if (color) {
 
-  //setTimeout(() => { if (key.classList.className.includes("hearbeat")) key.classList.toggle("heartbeat"); }, 1000);
+    root = document.documentElement;
+    root.style.setProperty('--key-color', color);
+  }
+
+  [...document.getElementsByClassName("heartbeat")].forEach(x => x.classList.remove("heartbeat"));
+  document.getElementById(key).classList.toggle("heartbeat");
 
 }
 
+function displayGameOutcomes(outcome) {
 
-// Sound initialization
+
+
+  let newOutcome = document.createElement("p");
+  newOutcome.textContent = outcomes[outcome].text;
+  newOutcome.classList.add(outcomes[outcome].className)
+  newOutcome.classList.add("outcome");
+
+  gameOutcomesElement = document.getElementById("game_outcomes");
+  if (gameOutcomesElement.childElementCount == 6) gameOutcomesElement.removeChild(gameOutcomesElement.childNodes[5]);
+
+  gameOutcomesElement.insertBefore(newOutcome, gameOutcomesElement.firstChild);
+
+}
+
+function updateTime() {
+
+  requestAnimationFrame(updateTime)
+
+  if ((Tone.context.currentTime) && (Tone.Transport.seconds)) {
+
+    document.querySelector('#test_zone_time_audio').textContent = "Audio Time is " + Tone.context.currentTime.toFixed(3)
+    document.querySelector('#test_zone_time_transport').textContent = "Transport Time is " + Tone.Transport.seconds.toFixed(3)
+
+  }
+
+}
+
+/*------------------------------------------------------Sound-related functions ---------------------------------------------------------*/
 
 function initializeSound(e) {
 
-  synth = new Tone.Synth().toMaster();
-  Tone.Transport.bpm.value = 100;
-  Tone.Transport.start(0)
-  //level1_part1.start();
+
+  if (Tone.context.state !== 'running') {
+    Tone.context.resume();
+  }
+
+  // updateTime();
+
 }
 
+function playSound(note) {
 
-function playSound(note, length) {
+  // console.log("Attacking note " + note);
+  Tone.Transport.stop();
+  pianoSampler.triggerAttack(convertNoteSyntax(note));
 
-  synth.triggerAttackRelease(convertNoteSyntax(note), "8n");
+}
 
+function releaseSound() {
+  pianoSampler.triggerRelease();
 }
 
 function playPiece() {
 
-  console.log("Playing part 1 now");
-  level1_part1.start();
 
-  console.log("Playing part 2 in " + Tone.Time("+2n"));
-  level1_part2.start("+2n");
+  if (Tone.context.state !== 'running') {
+    Tone.context.resume();
+  }
 
-  /* console.log("Playing part 3 in " + Tone.Time("+2n"));
-   level1_part3.start("+2n"); */
+  //pianoSampler.triggerAttack("C4", "4n");
 
+  playSubPieceEvents = [];
 
+  pieces[currentLevel].forEach((subPiece, index) => {
+
+    playSubPieceEvents.push(function playSubPiece(time) {
+
+      flashKey(document.getElementById(subPiece.note).id, "green");
+      pianoSampler.triggerAttackRelease(subPiece.note, subPiece.duration, time);
+
+      console.log("playing note " + index + " at " + Tone.Transport.seconds);
+
+    });
+
+  });
+
+  pieces[currentLevel].forEach((subPiece, index) => Tone.Transport.scheduleOnce(playSubPieceEvents[index], subPiece.time));
+  Tone.Transport.start();
 }
 
 function convertNoteSyntax(note) {
@@ -95,3 +172,29 @@ function convertNoteSyntax(note) {
 
 }
 
+function compareNotesWithPiece(notePlayed, currentPiece) {
+
+  if (pieceIndex == (currentPiece.length - 1)) displayGameOutcomes("levelPassed");
+
+  else if (notePlayed == currentPiece[pieceIndex].note) {
+
+    displayGameOutcomes("noteSuccess");
+    flashKey(notePlayed, "green");
+    pieceIndex++;
+
+  }
+
+  else if (Tone.Frequency(currentPiece[pieceIndex].note) < Tone.Frequency(notePlayed)) {
+
+    displayGameOutcomes("tooHigh")
+    flashKey(notePlayed, "red");
+    pieceIndex = 0;
+  }
+
+  else {
+    displayGameOutcomes("tooLow");
+    flashKey(notePlayed, "red");
+    pieceIndex = 0;
+
+  }
+}

@@ -1,12 +1,194 @@
+@import url('https://fonts.googleapis.com/css?family=Encode+Sans+Expanded&display=swap');
+
+
+:root {
+  
+  --key-color:rgb(103, 175, 103);
+}
+
+@font-face {
+  
+  font-family: 'AlphaMusicMan';
+  src: url('/fonts/AlphaMusicMan.ttf');
+
+    
+  font-family: 'DTNOTED';
+  src: url('/fonts/DTNOTED_.TTF');
+
+}
+
 * {
 
   box-sizing: border-box;
+  font-family:  'Encode Sans Expanded', sans-serif;
 }
+
+
+#game_screen 
+
+{
+  display: grid;
+  width: 98vw;
+  height: 98vh;
+  margin: auto;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(6, 1fr);
+
+}
+
+#banner
+
+{
+  grid-column: span 3;
+  grid-row: span 1; 
+  font-family: 'DTNOTED';
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: black;
+  color: white;
+  font-size: 100px;
+  margin-bottom: 10px;
+}
+
+#picture
+{
+
+  grid-column: span 1;
+  grid-row: span 3; 
+
+  display: flex;
+  background-color: black;
+  justify-content: center;
+  margin: 0px 0px 10px 0px;
+
+
+}
+
+#text_description 
+
+{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  grid-column: span 1;
+  grid-row: span 3; 
+  padding: 0px 30px 10px 30px;
+  font-size: 18px;
+  background-image:url("../images/text_container_background.jpg");
+  background-size: 20%;
+  background-repeat: no-repeat;
+  background-position: 100% 100%;
+
+}
+
+#text_description hr
+
+{
+  border-top: 1px solid gray;
+  margin: 0px;
+
+}
+
+#buttons_container {
+
+  grid-column: span 1;
+  grid-row: span 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: bisque;
+  margin-bottom: 10px;
+  background-color: lightgray;
+}
+
+#buttons_container button {
+
+  margin: auto;
+  width: 40%;
+  font-size: 18px;
+    border-radius: 10px;
+  padding: 15px;
+  font-weight: bold;
+}
+
+
+.inactive
+
+{
+
+  background-color: lightgray;
+  color: gray;
+}
+
+.active 
+
+{
+  background-color: black;
+  color: white;
+}
+
+#game_outcomes
+
+{
+
+  display: grid;
+  background-color: black;
+  grid-template-columns: 1fr;
+  grid-template-rows: repeat(6, 1fr);
+  margin: 0px 0px 10px 0px;
+  grid-column: span 1;
+  grid-row: span 2;
+
+}
+
+
+.outcome {
+
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding: 5px;
+  margin: 0px;
+  text-align: center;
+  font-size: 18px;
+  font-weight: bold;
+  border-color: white;
+  border-top-style: solid;
+  border-bottom-style: solid;
+  color: white;
+
+}
+
+
+.note_success 
+
+{
+  background-color: green;
+
+
+}
+
+.note_failure {
+
+  background-color: red;
+}
+
+.level_success {
+
+  background-color: lightblue;
+}
+
+
 
 #piano
 
 {
 
+  grid-column: span 3;
+  grid-row: span 2;
   display: flex;
   border-top-style: solid;  
   border-bottom-style: solid;
@@ -20,7 +202,7 @@
 
 {
  
-  height: 300px;
+  /*height: 300px;*/
   width: 25%;
   display: grid;
    
@@ -82,21 +264,18 @@
 
 }
 
-.button 
-
-{
-
-  border-radius: 10px;
-  padding: 15px;
-  font-weight: bold;
-  background-color: rgb(172, 214, 55);
-
-}
-
 .heartbeat {
 	animation: heartbeat 1.5s ease-in-out alternate both;
 }
 
+.green
+
+{
+  background-color: rgb(103, 175, 103);
+
+}
+
+#test_zone_time_audio, #test_zone_time_transport { margin: 20px; }
 
 @keyframes heartbeat {
 
@@ -104,29 +283,31 @@
             transform: scale(1);
             transform-origin: center center;
             animation-timing-function: ease-out;
-            background-color: rgb(103, 175, 103);
-  }
+            background-color: white  }
 
   10% {
             transform: scale(0.91);
             animation-timing-function: ease-in;
-            background-color: white;
+            background-color: var(--key-color);
       }
 
   17% {
             transform: scale(0.98);
             animation-timing-function: ease-out;
+            background-color:white;
   }
 
   33% {
             transform: scale(0.87);
             animation-timing-function: ease-in;
-            background-color: rgb(103, 175, 103);
+            background-color: var(--key-color);
   }
 
   45% {
             transform: scale(1);
             animation-timing-function: ease-out;
-            background-color: white;
+            background-color:white;
+       
   }
+
 }
