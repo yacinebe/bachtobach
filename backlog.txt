@@ -1,0 +1,20 @@
+1) Add game indicators
+
+.) Score
+.) Number of note sucessful 
+.) Message
+
+2) Add score calculations - displayed at the end 
+
+3) Add play pause
+
+4) Add tempo player
+
+5) Add difficulty level
+
+->number of notes to pass the level
+-> reset or not?
+
+6) Add landing page
+
+7) Add closing page 

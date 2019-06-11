@@ -48,7 +48,7 @@
   align-items: center;
   background-color: black;
   color: white;
-  font-size: 100px;
+  font-size: 70px;
   margin-bottom: 10px;
 }
 
@@ -104,7 +104,7 @@
   background-color: lightgray;
 }
 
-#buttons_container button {
+button {
 
   margin: auto;
   width: 40%;
@@ -134,14 +134,15 @@
 
 {
 
-  display: grid;
-  background-color: black;
-  grid-template-columns: 1fr;
-  grid-template-rows: repeat(6, 1fr);
-  margin: 0px 0px 10px 0px;
+  
   grid-column: span 1;
   grid-row: span 2;
-
+  display: grid;
+  background-color: black;
+  grid-template-columns:repeat(15, 1fr);
+  grid-template-rows:repeat(8, 1fr);
+  margin: 0px 0px 10px 0px;
+  
 }
 
 
@@ -155,12 +156,61 @@
   text-align: center;
   font-size: 18px;
   font-weight: bold;
-  border-color: white;
-  border-top-style: solid;
-  border-bottom-style: solid;
+  border-color: black;
+  border-style: solid;
   color: white;
+  grid-row: span 1;
+  grid-column: span 1;
 
 }
+
+#game_outcomes footer
+
+{
+
+  display: flex;
+  text-align: center;
+  justify-content: center;
+    background-color: red;
+    padding-top: 5px;
+  text-align: center;
+  border-style:solid;
+  border-color: black;
+  color: white;
+}
+
+#score
+
+{
+
+  grid-row-start: 8;
+  grid-column: span 5;
+
+
+}
+
+#message
+
+{
+
+  grid-row-start: 8;
+  grid-column: span 5;
+
+
+
+}
+
+#next_note {
+
+
+  grid-row-start: 8;
+  grid-column: span 5;
+
+
+
+
+}
+
 
 
 .note_success 
@@ -178,10 +228,24 @@
 
 .level_success {
 
-  background-color: lightblue;
+  background-color: black;
+  grid-row: span 4;
+  grid-column: span 15;
+  display: flex;
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+
 }
 
+#game_outcomes button {
 
+  grid-row: span 2;
+  grid-column: span 15;
+
+
+}
 
 #piano
 
@@ -260,12 +324,10 @@
   padding: 40px;
   font: 40px;
   font-weight: bold;
-
-
 }
 
 .heartbeat {
-	animation: heartbeat 1.5s ease-in-out alternate both;
+	animation: heartbeat 0.8s ease-in-out alternate both;
 }
 
 .green
@@ -285,25 +347,25 @@
             animation-timing-function: ease-out;
             background-color: white  }
 
-  10% {
+  20% {
             transform: scale(0.91);
             animation-timing-function: ease-in;
             background-color: var(--key-color);
       }
 
-  17% {
+  34% {
             transform: scale(0.98);
             animation-timing-function: ease-out;
             background-color:white;
   }
 
-  33% {
+  66% {
             transform: scale(0.87);
             animation-timing-function: ease-in;
             background-color: var(--key-color);
   }
 
-  45% {
+  90% {
             transform: scale(1);
             animation-timing-function: ease-out;
             background-color:white;
