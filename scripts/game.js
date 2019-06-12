@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("piano").addEventListener("mousedown", reactToMouseDown);
   document.getElementById("piano").addEventListener("mouseup", reactToMouseUp);
   document.getElementById("piece_button").addEventListener("click", playPiece);
-  document.getElementById("start_button").addEventListener("click", moveToNextLevel);
+  //document.getElementById("start_button").addEventListener("click", moveToNextLevel);
   pianoSampler = new Tone.Sampler(pianoSample, () => console.log("All samples loaded")).toMaster();
   console.log(level1);
   loadLevel(currentLevel);
@@ -31,7 +31,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function loadLevel(level) {
 
-  document.getElementById("banner").textContent = level.title;
+  if (document.getElementById("title_text")) document.getElementById("title_text").remove();
+
+  title = document.createElement("p");
+  title.id = "title_text";
+  title.textContent = level.title;
+  document.getElementById("banner").insertBefore(title, document.getElementById("buttons_container"));
+
   document.getElementById("main_picture").src = level.picture;
   document.getElementById("main_text_1").textContent = level.mainText1;
   document.getElementById("main_text_2").textContent = level.mainText2;
@@ -171,6 +177,8 @@ function flashKey(key, color, timing) {
 
 function displayGameOutcomes(outcome) {
 
+  console.log(outcome);
+
   //New outcome elements to add depending on result action - We differentiate between progress (red and green squares) and sucess (messages)
 
   let newProgressOutcome = document.createElement("p");
@@ -227,7 +235,7 @@ function displayGameOutcomes(outcome) {
 
   }
 
-  else if ((outcome === "noteSuccess") && (currentLevel.state != "finished"))
+  else if ((outcome === "noteSuccess") || (outcome === "combo5") || (outcome === "combo10") && (currentLevel.state != "finished")) {
 
     for (let counter = 0; counter < Math.floor(100 / currentLevel.piece.length); counter++) {
 
@@ -236,12 +244,18 @@ function displayGameOutcomes(outcome) {
 
     }
 
-  else if ((outcome != "noteSuccess") && (currentLevel.state != "finished")) {
-
-    if (document.getElementsByClassName("progress")) [...document.getElementsByClassName("progress")].forEach(x => x.remove());
-
   }
 
+  else if ((outcome === "tooHigh") || (outcome === "tooLow") && (currentLevel.state != "finished")) {
+
+    if (document.getElementsByClassName("progress")) {
+
+      [...document.getElementsByClassName("progress")].forEach(x => x.remove());
+
+    }
+
+
+  }
 
 }
 
@@ -345,8 +359,6 @@ function compareNotesWithPiece(notePlayed, currentPiece) {
       resultsLog.push([status, pieceIndex]);
       if ((checkCombo(resultsLog) % 10 == 0) && (resultsLog.length > 0)) { status = "combo10"; resultsLog[resultsLog.length - 1][0] = "combo10"; }
       else if ((checkCombo(resultsLog) % 5 == 0) && (resultsLog.length > 0)) { console.log("combo4"); status = "combo5"; resultsLog[resultsLog.length - 1][0] = "combo5"; }
-
-
 
       computeScoreAndMessage(status);
       pieceIndex++;
