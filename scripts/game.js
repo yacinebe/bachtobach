@@ -36,12 +36,31 @@ function loadLevel(level) {
   document.getElementById("main_text_1").textContent = level.mainText1;
   document.getElementById("main_text_2").textContent = level.mainText2;
   document.getElementById("main_text_3").textContent = level.mainText3;
+
   if (document.getElementsByClassName("outcome")) { [...document.getElementsByClassName("outcome")].forEach(x => x.remove()) };
   if (document.querySelector("#game_outcomes button")) { document.querySelector("#game_outcomes button").remove() };
   if (level.pictureWidth) { document.getElementById("main_picture").style.width = level.pictureWidth; }
   if (document.getElementById("footer_bar")) document.getElementById("footer_bar").remove();
+  if (document.getElementById("progress_bar")) document.getElementById("progress_bar").remove();
+  if (document.getElementsByClassName("message")) [...document.getElementsByClassName("message")].forEach(x => x.remove());
 
   pieceIndex = 0;
+
+  //Preparing the progress bar
+
+  progressBar = document.createElement("div");
+  progressBar.id = "progress_bar";
+  document.getElementById("game_outcomes").append(progressBar);
+
+  // Preparing the message panel
+
+
+  message = document.createElement("div");
+  message.classList.add("message");
+  message.innerHTML = "Let's start!";
+
+  document.getElementById("game_outcomes").append(message);
+
 
   //Preparing the footer with the three elements
 
@@ -52,16 +71,13 @@ function loadLevel(level) {
   scoreField.id = "score";
   scoreField.innerHTML = "Score: 0 pts"
 
-  message = document.createElement("footer");
-  message.id = "message";
-  message.innerHTML = "Let's start!";
 
   nextNote = document.createElement("footer");
   nextNote.id = "next_note";
   nextNote.innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
 
   footerBar.append(scoreField);
-  footerBar.append(message);
+  // footerBar.append(message);
   footerBar.append(nextNote);
   document.getElementById("game_outcomes").append(footerBar);
 
@@ -155,11 +171,16 @@ function flashKey(key, color, timing) {
 
 function displayGameOutcomes(outcome) {
 
-  //New outcome element to add depending on result action
+  //New outcome elements to add depending on result action - We differentiate between progress (red and green squares) and sucess (messages)
 
-  let newOutcome = document.createElement("p");
-  newOutcome.classList.add(outcomes[outcome].className)
-  newOutcome.classList.add("outcome");
+  let newProgressOutcome = document.createElement("p");
+  newProgressOutcome.classList.add(outcomes[outcome].className);
+  newProgressOutcome.classList.add("progress");
+  //newProgressOutcome.classList.add("outcome");
+
+  let newSuccessOutcome = document.createElement("p");
+  newSuccessOutcome.classList.add(outcomes[outcome].className);
+  newSuccessOutcome.classList.add("outcome");
 
   //An additional outcome in case of "Perfect"
 
@@ -171,10 +192,7 @@ function displayGameOutcomes(outcome) {
   //Selecting the outcome area
 
   gameOutcomesElement = document.getElementById("game_outcomes");
-
-  //Cleaning it when the number of little squares becomes to big
-
-  if (gameOutcomesElement.childElementCount == 105) gameOutcomesElement.removeChild(gameOutcomesElement.childNodes[5]);
+  progressBar = document.getElementById("progress_bar");
 
   //First case is when the player succeeds
 
@@ -186,19 +204,19 @@ function displayGameOutcomes(outcome) {
 
     if (document.getElementsByClassName("note_success")) [...document.getElementsByClassName("note_success")].forEach(x => x.remove());
     if (document.getElementsByClassName("note_failure")) [...document.getElementsByClassName("note_failure")].forEach(x => x.remove());
+    document.getElementById("progress_bar").remove();
     document.getElementById("footer_bar").remove();
+    [...document.getElementsByClassName("message")].forEach(x => x.remove());
 
     //THe outcome to display includes a success text
 
-    newOutcome.textContent = currentLevel.successText;
-
+    newSuccessOutcome.textContent = currentLevel.successText;
     // If we pass with perfect we display the optional perfect one
-
     if (outcome == "levelPassedWithPerfect") { gameOutcomesElement.append(optionalPerfectOutcome); }
 
     //We display the game sucess outcome
 
-    gameOutcomesElement.append(newOutcome);
+    gameOutcomesElement.append(newSuccessOutcome);
 
     //And finally we add a button to move to the next level
 
@@ -209,7 +227,21 @@ function displayGameOutcomes(outcome) {
 
   }
 
-  else if (currentLevel.state != "finished") gameOutcomesElement.append(newOutcome);
+  else if ((outcome === "noteSuccess") && (currentLevel.state != "finished"))
+
+    for (let counter = 0; counter < Math.floor(100 / currentLevel.piece.length); counter++) {
+
+      let duplicate = newProgressOutcome.cloneNode();
+      progressBar.append(duplicate);
+
+    }
+
+  else if ((outcome != "noteSuccess") && (currentLevel.state != "finished")) {
+
+    if (document.getElementsByClassName("progress")) [...document.getElementsByClassName("progress")].forEach(x => x.remove());
+
+  }
+
 
 }
 
@@ -294,8 +326,6 @@ function compareNotesWithPiece(notePlayed, currentPiece) {
 
 
       displayGameOutcomes(status);
-
-
       scoreSheet[currentLevelIndex] = score;
 
       score = 0;
@@ -307,12 +337,18 @@ function compareNotesWithPiece(notePlayed, currentPiece) {
 
     else {
 
+
       status = "noteSuccess";
-      computeScoreAndMessage(status);
+
       flashKey(notePlayed, "green");
 
       resultsLog.push([status, pieceIndex]);
+      if ((checkCombo(resultsLog) % 10 == 0) && (resultsLog.length > 0)) { status = "combo10"; resultsLog[resultsLog.length - 1][0] = "combo10"; }
+      else if ((checkCombo(resultsLog) % 5 == 0) && (resultsLog.length > 0)) { console.log("combo4"); status = "combo5"; resultsLog[resultsLog.length - 1][0] = "combo5"; }
 
+
+
+      computeScoreAndMessage(status);
       pieceIndex++;
       displayResults(status, score, message);
 
@@ -347,12 +383,36 @@ function compareNotesWithPiece(notePlayed, currentPiece) {
 
 }
 
+function checkCombo(log) {
+
+  //Find the first non sucess elemnt starting from the end
+
+  let indexOfFirstFail = 0;
+
+  for (index = log.length - 1; index >= 0; index--) {
+
+    if ((log[index][0] != "noteSuccess") && (log[index][0] != "combo5") && (log[index][0] != "combo10")) {
+
+      indexOfFirstFail = index;
+      break;
+    }
+
+  }
+
+  if (indexOfFirstFail > 0) comboIndex = log.length - 1 - indexOfFirstFail; else comboIndex = log.length;
+  return comboIndex;
+
+}
+
+
+
+
 function displayResults(status, score, message) {
 
 
   displayGameOutcomes(status);
   displayScore(score);
-  displayMessage(message);
+  displayMessage(message, status);
   document.getElementById("next_note").innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
 
 }
@@ -364,10 +424,11 @@ function computeScoreAndMessage(status) {
   if (status === "noteSuccess") { score++; message = "Well Done!"; }
   if (status === "tooHigh") { score--; message = "Too High!"; }
   if (status === "tooLow") { score--; message = "Too Low!"; }
+  if (status === "flawless") { score = score * 2; message = "PERFECT!!!"; }
+
   if (status === "combo3") { score = score + 3; message = "X3 COMBO!"; }
   if (status === "combo5") { score = score + 5; message = "X5 COMBO!"; }
   if (status === "combo10") { score = score + 10; message = "X10 COMBO!"; }
-  if (status === "flawless") { score = score * 2; message = "PERFECT!!!"; }
 
 }
 
@@ -378,8 +439,15 @@ function displayScore(score) {
 
 }
 
-function displayMessage(message) {
+function displayMessage(message, status) {
 
-  document.getElementById("message").innerHTML = message;
+  document.getElementsByClassName("message")[0].innerHTML = message;
+  document.getElementsByClassName("message")[0].id = status;
+
+  /* if ((message != "combo5" && message != "combo10")) document.getElementsByClassName("message")[0].id = status;
+  else if (status == "combo5") document.getElementsByClassName("message")[0].id = "combo5";
+  else if (status == "combo10") document.getElementsByClassName("message")[0].id = "combo10"; */
 
 }
+
+

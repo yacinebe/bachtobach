@@ -1,6 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Encode+Sans+Expanded&display=swap');
 
-
 :root {
   
   --key-color:rgb(103, 175, 103);
@@ -10,7 +9,6 @@
   
   font-family: 'AlphaMusicMan';
   src: url('/fonts/AlphaMusicMan.ttf');
-
     
   font-family: 'DTNOTED';
   src: url('/fonts/DTNOTED_.TTF');
@@ -53,11 +51,11 @@
 }
 
 #picture
+
 {
 
   grid-column: span 1;
   grid-row: span 3; 
-
   display: flex;
   background-color: black;
   justify-content: center;
@@ -92,7 +90,7 @@
 
 }
 
-#buttons_container {
+ #buttons_container {
 
   grid-column: span 1;
   grid-row: span 1;
@@ -102,18 +100,17 @@
   background-color: bisque;
   margin-bottom: 10px;
   background-color: lightgray;
-}
+} 
 
 button {
 
   margin: auto;
   width: 40%;
   font-size: 18px;
-    border-radius: 10px;
+  border-radius: 10px;
   padding: 15px;
   font-weight: bold;
 }
-
 
 .inactive
 
@@ -133,10 +130,9 @@ button {
 #game_outcomes
 
 {
-
   
   grid-column: span 1;
-  grid-row: span 2;
+  grid-row: span 3;
   display: grid;
   background-color: black;
   grid-template-columns:repeat(15, 1fr);
@@ -164,6 +160,43 @@ button {
 
 }
 
+.progress
+
+{
+
+  grid-row: span 1;
+  grid-column: span 1;
+  background-color: green;
+  margin: 0px;
+
+}
+
+
+.message 
+
+{
+  grid-column: span 15;
+  grid-row: span 6;  
+  display: flex;
+  font-size: 60px;
+  color: white;
+  text-align: center;
+  justify-content: center;
+  align-items: center;
+
+}
+
+
+
+
+
+
+#combo5  {
+
+  animation: slide-in-fwd-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; 
+  background-color: red;
+}
+
 #game_outcomes footer
 
 {
@@ -189,22 +222,30 @@ button {
   grid-column-end: 16;
   justify-content: space-between;
   display: flex;
-  
 
 }
 
 #footer_bar footer
+
 {
-width: 33%;
+
+  width: 50%;
 
 }
 
+#progress_bar
 
+{
 
+  grid-row: span 1;
+  grid-column: span 15;
+  display: grid;
+  grid-template-columns:repeat(100, 1fr);
+  grid-template-rows: 1fr;
+  background-color: beige;
+  margin: 5px;  
 
-
-
-
+}
 
 .note_success 
 
@@ -382,5 +423,43 @@ width: 33%;
             background-color:white;
        
   }
+
+}
+
+@keyframes slide-in-fwd-center {
+  
+  from {
+    transform: scale(1);
+    transform-origin: center center;
+    animation-timing-function: ease-out;
+    background-color: white  }
+
+20% {
+    transform: scale(0.91);
+    animation-timing-function: ease-in;
+    background-color: var(--key-color);
+}
+
+34% {
+    transform: scale(0.98);
+    animation-timing-function: ease-out;
+    background-color:white;
+}
+
+66% {
+    transform: scale(0.87);
+    animation-timing-function: ease-in;
+    background-color: var(--key-color);
+}
+
+90% {
+    transform: scale(1);
+    animation-timing-function: ease-out;
+    background-color:white;
+
+}
+
+
+
 
 }

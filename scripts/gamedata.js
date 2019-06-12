@@ -115,8 +115,6 @@ var pianoSample = {
 
 }
 
-
-
 var level1Piece = [
 
   { note: "C4", duration: blackKey },
@@ -124,7 +122,7 @@ var level1Piece = [
   { note: "E4", duration: blackKey, time: "+" + 2 * blackKey },
   { note: "C4", duration: blackKey, time: "+" + 3 * blackKey },
 
-  /*{ note: "C4", duration: blackKey, time: "+" + 4 * blackKey },
+  { note: "C4", duration: blackKey, time: "+" + 4 * blackKey },
   { note: "D4", duration: blackKey, time: "+" + 5 * blackKey },
   { note: "E4", duration: blackKey, time: "+" + 6 * blackKey },
   { note: "C4", duration: blackKey, time: "+" + 7 * blackKey },
@@ -133,7 +131,7 @@ var level1Piece = [
   { note: "F4", duration: blackKey, time: "+" + 9 * blackKey },
   { note: "G4", duration: 2 * blackKey, time: "+" + 10 * blackKey },
 
-  { note: "E4", duration: blackKey, time: "+" + 12 * blackKey },
+  /* { note: "E4", duration: blackKey, time: "+" + 12 * blackKey },
   { note: "F4", duration: blackKey, time: "+" + 13 * blackKey },
   { note: "G4", duration: 2 * blackKey, time: "+" + 14 * blackKey },
 
@@ -275,22 +273,6 @@ var level4Piece =
     //{ note: "A4", duration: halfBlackKey + blackKey, time: "+" + 5 * halfBlackKey } */B
 
   ]
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 var level5Piece = [
 
   { note: "D4", duration: 0.65 * blackKey },
@@ -460,6 +442,8 @@ var levels = [level1, level2, level3, level4, level5];
 var outcomes = {};
 
 outcomes.noteSuccess = { className: "note_success" };
+outcomes.combo5 = { className: "note_success" };
+outcomes.combo10 = { className: "note_success" };
 outcomes.tooLow = { className: "note_failure" };
 outcomes.tooHigh = { className: "note_failure" };
 outcomes.levelPassed = { className: "level_success" };
