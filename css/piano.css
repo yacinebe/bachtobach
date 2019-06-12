@@ -171,45 +171,38 @@ button {
   display: flex;
   text-align: center;
   justify-content: center;
-    background-color: red;
-    padding-top: 5px;
+  background-color: red;
+  padding-top: 5px;
   text-align: center;
   border-style:solid;
   border-color: black;
   color: white;
 }
 
-#score
+
+#footer_bar
 
 {
 
   grid-row-start: 8;
-  grid-column: span 5;
-
+  grid-column-start: 1;
+  grid-column-end: 16;
+  justify-content: space-between;
+  display: flex;
+  
 
 }
 
-#message
-
+#footer_bar footer
 {
-
-  grid-row-start: 8;
-  grid-column: span 5;
-
-
+width: 33%;
 
 }
 
-#next_note {
-
-
-  grid-row-start: 8;
-  grid-column: span 5;
 
 
 
 
-}
 
 
 
@@ -239,11 +232,30 @@ button {
 
 }
 
+.perfect 
+
+{
+
+  background-color: black;
+  grid-row: span 1;
+  grid-column: span 15;
+  display: flex;
+  font-size: 18px;
+  align-items: center;
+  justify-content: center;
+  padding: 15px;
+
+
+
+}
+
 #game_outcomes button {
 
+  
   grid-row: span 2;
-  grid-column: span 15;
-
+  grid-column-start: 3;
+  grid-column-end: 14;
+  width: auto;
 
 }
 
@@ -269,7 +281,6 @@ button {
   /*height: 300px;*/
   width: 25%;
   display: grid;
-   
   grid-template-columns: repeat(31, 1fr);
   grid-template-rows: repeat(6, 1fr);
   background-color: black;

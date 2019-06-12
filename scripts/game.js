@@ -5,10 +5,12 @@ var keyLogger = [];
 var currentLevelIndex = 0;
 var currentLevel = levels[currentLevelIndex];
 var pieceIndex = 0;
-Tone.Transport.bpm.value = 140;
 var microDelay = true;
-var scoreLog = [];
-var score = 0, message;
+var scoreLog = [], scoreSheet = [];
+var resultsLog = [];
+var score = 0;
+var message;
+Tone.Transport.bpm.value = 140;
 
 //Dom initialization
 
@@ -35,11 +37,33 @@ function loadLevel(level) {
   document.getElementById("main_text_2").textContent = level.mainText2;
   document.getElementById("main_text_3").textContent = level.mainText3;
   if (document.getElementsByClassName("outcome")) { [...document.getElementsByClassName("outcome")].forEach(x => x.remove()) };
+  if (document.querySelector("#game_outcomes button")) { document.querySelector("#game_outcomes button").remove() };
   if (level.pictureWidth) { document.getElementById("main_picture").style.width = level.pictureWidth; }
-  document.getElementById("next_note").innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
-
+  if (document.getElementById("footer_bar")) document.getElementById("footer_bar").remove();
 
   pieceIndex = 0;
+
+  //Preparing the footer with the three elements
+
+  footerBar = document.createElement("div");
+  footerBar.id = "footer_bar";
+
+  scoreField = document.createElement("footer");
+  scoreField.id = "score";
+  scoreField.innerHTML = "Score: 0 pts"
+
+  message = document.createElement("footer");
+  message.id = "message";
+  message.innerHTML = "Let's start!";
+
+  nextNote = document.createElement("footer");
+  nextNote.id = "next_note";
+  nextNote.innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
+
+  footerBar.append(scoreField);
+  footerBar.append(message);
+  footerBar.append(nextNote);
+  document.getElementById("game_outcomes").append(footerBar);
 
 }
 
@@ -59,6 +83,7 @@ function moveToLowerLevel() {
 
   currentLevel = levels[currentLevelIndex];
   loadLevel(currentLevel);
+
 }
 
 function displayPiano(numberOfOctaves, startKey, endKey) {
@@ -130,29 +155,61 @@ function flashKey(key, color, timing) {
 
 function displayGameOutcomes(outcome) {
 
-  let newOutcome = document.createElement("p");
+  //New outcome element to add depending on result action
 
+  let newOutcome = document.createElement("p");
   newOutcome.classList.add(outcomes[outcome].className)
   newOutcome.classList.add("outcome");
 
+  //An additional outcome in case of "Perfect"
+
+  optionalPerfectOutcome = document.createElement("p");
+  optionalPerfectOutcome.classList.add("perfect");
+  optionalPerfectOutcome.classList.add("outcome");
+  optionalPerfectOutcome.innerHTML = "PERFEEEECT! YOU MADE ZERO MISTAKES";
+
+  //Selecting the outcome area
+
   gameOutcomesElement = document.getElementById("game_outcomes");
+
+  //Cleaning it when the number of little squares becomes to big
 
   if (gameOutcomesElement.childElementCount == 105) gameOutcomesElement.removeChild(gameOutcomesElement.childNodes[5]);
 
-  if (outcome == "levelPassed") {
+  //First case is when the player succeeds
 
-    gameOutcomesElement.innerHTML = "";
+  if (outcome == "levelPassed" || outcome == "levelPassedWithPerfect") {
+
+    currentLevel.state = "finished";
+
+    //We clean the outcome area first to display the 'Win' message
+
+    if (document.getElementsByClassName("note_success")) [...document.getElementsByClassName("note_success")].forEach(x => x.remove());
+    if (document.getElementsByClassName("note_failure")) [...document.getElementsByClassName("note_failure")].forEach(x => x.remove());
+    document.getElementById("footer_bar").remove();
+
+    //THe outcome to display includes a success text
+
     newOutcome.textContent = currentLevel.successText;
 
+    // If we pass with perfect we display the optional perfect one
+
+    if (outcome == "levelPassedWithPerfect") { gameOutcomesElement.append(optionalPerfectOutcome); }
+
+    //We display the game sucess outcome
+
     gameOutcomesElement.append(newOutcome);
+
+    //And finally we add a button to move to the next level
 
     nextLevelButton = document.createElement("button");
     nextLevelButton.textContent = "Move to next level >>";
     nextLevelButton.addEventListener("click", moveToNextLevel);
     gameOutcomesElement.append(nextLevelButton);
+
   }
 
-  else gameOutcomesElement.append(newOutcome);
+  else if (currentLevel.state != "finished") gameOutcomesElement.append(newOutcome);
 
 }
 
@@ -223,31 +280,56 @@ function convertMusicNotationToSharp(note) {
 
 function compareNotesWithPiece(notePlayed, currentPiece) {
 
-  if (pieceIndex == (currentLevel.piece.length - 1)) {
+  //The note played is right
 
-    displayGameOutcomes("levelPassed");
-    scoreSheet[currentLevelIndex] = score;
-    score = 0;
+  if (convertMusicNotationToSharp(notePlayed) == currentLevel.piece[pieceIndex].note) {
 
-  }
 
-  else if (convertMusicNotationToSharp(notePlayed) == currentLevel.piece[pieceIndex].note) {
+    //...and the piece is over
 
-    status = "noteSuccess";
-    computeScoreAndMessage(status);
-    displayResults(status, score, message);
-    flashKey(notePlayed, "green");
-    pieceIndex++;
+    if (pieceIndex == (currentLevel.piece.length - 1)) {
 
+      if (resultsLog.reduce((accumulator, currentValue) => accumulator = accumulator * (currentValue[0] === "noteSuccess"), true) == 1) status = "levelPassedWithPerfect"
+      else status = "levelPassed";
+
+
+      displayGameOutcomes(status);
+
+
+      scoreSheet[currentLevelIndex] = score;
+
+      score = 0;
+      resultsLog = [];
+
+    }
+
+    //...and the piece is still going on
+
+    else {
+
+      status = "noteSuccess";
+      computeScoreAndMessage(status);
+      flashKey(notePlayed, "green");
+
+      resultsLog.push([status, pieceIndex]);
+
+      pieceIndex++;
+      displayResults(status, score, message);
+
+
+    }
   }
 
   else if (Tone.Frequency(currentLevel.piece[pieceIndex].note) < Tone.Frequency(convertMusicNotationToSharp(notePlayed))) {
 
     status = "tooHigh";
     computeScoreAndMessage(status);
-    displayResults(status, score, message);
+
     flashKey(notePlayed, "red");
+
+    resultsLog.push([status, pieceIndex]);
     pieceIndex = 0;
+    displayResults(status, score, message);
 
   }
 
@@ -255,9 +337,12 @@ function compareNotesWithPiece(notePlayed, currentPiece) {
 
     status = "tooLow";
     computeScoreAndMessage(status);
-    displayResults(status, score, message);
+
     flashKey(notePlayed, "red");
+
+    resultsLog.push([status, pieceIndex]);
     pieceIndex = 0;
+    displayResults(status, score, message);
   }
 
 }
@@ -268,7 +353,7 @@ function displayResults(status, score, message) {
   displayGameOutcomes(status);
   displayScore(score);
   displayMessage(message);
-  document.getElementById("next_note").innerHTML = "Next: " + currentLevel.piece[pieceIndex + 1].note;
+  document.getElementById("next_note").innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
 
 }
 
