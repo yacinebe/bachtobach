@@ -39,6 +39,21 @@
 
 }
 
+#game_screen >*, #game_screen >*>*
+
+{
+
+  border-radius: 5px;
+
+
+}
+
+footer
+{
+
+  border-radius: 5px;
+}
+
 #banner
 
 {
@@ -49,6 +64,7 @@
   /*align-items: center; */
   background-color: #21222A;
   color: white;
+  
   
  
 

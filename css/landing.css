@@ -37,11 +37,29 @@
 
 }
 
+#note {
+
+  position: absolute;
+ top: 100px;
+  right: 100px; 
+
+  transform: translate(-3000,550px);
+  -webkit-transform: translate(-300,550px);
+  -o-transform: translate(-300,350px); 
+  -moz-transform: translate(-300,350px);
+
+
+}
+
 #key
 
 {
 
   position: absolute;
+  top: 500px;
+  left: 50px
+
+
 }
 
 #title {
@@ -86,4 +104,13 @@ button
   width: 60%;
   margin: auto;
   padding: 20px;
+}
+
+#play_now
+
+{
+
+background-color: white;
+color: black;
+
 }
