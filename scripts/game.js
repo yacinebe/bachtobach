@@ -108,7 +108,7 @@ function loadLevel(level) {
   nextNote = document.createElement("footer");
   nextNote.id = "next_note";
   nextNote.innerHTML = "Next: " + currentLevel.piece[pieceIndex].note + "<br> Click to show/hide keys";
-  nextNote.addEventListener("click", showKeys);
+  nextNote.addEventListener("click", toggleKeys);
 
   footerBar.append(scoreField);
 
@@ -116,7 +116,7 @@ function loadLevel(level) {
   footerBar.append(chronoField);
   document.getElementById("game_outcomes").append(footerBar);
 
-  showKeys();
+  if (currentLevelIndex == 0) toggleKeys();
 
   loadPiece();
   startChrono();
@@ -582,7 +582,7 @@ function switchFromPlayToPause() {
 }
 
 
-function showKeys() {
+function toggleKeys() {
 
 
   if (!keyshown) {
@@ -604,8 +604,5 @@ function showKeys() {
     keyshown = false;
 
   }
-
-
-
 
 }
