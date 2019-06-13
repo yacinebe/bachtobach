@@ -350,8 +350,6 @@ var level5Piece = [
   { note: "F4", duration: 0.65 * blackKey, time: "+" + 46 * 0.65 * blackKey },
   { note: "F3", duration: 0.65 * blackKey, time: "+" + 47 * 0.65 * blackKey },
 
-
-
 ];
 
 
@@ -359,7 +357,9 @@ var level5Piece = [
 
 var level1 = {
 
-  title: "LEVEL I - BROTHER JOHN",
+  levelNumber: "Level I",
+  title: "Brother John",
+
   picture: "./images/brotherjohn.jpg",
 
   piece: level1Piece,
@@ -367,7 +367,8 @@ var level1 = {
   mainText2: "This is an easy piece to warm up and introduce you to the game!",
   mainText3: "Make sure to sing along!",
   successText: "Well Done! Brother John is now awake... You pass to the next level",
-  piece: level1Piece
+  piece: level1Piece,
+  counter: 9
 
 }
 
@@ -377,30 +378,32 @@ var level2 =
 
 {
 
-  title: "LEVEL II - THE LEGEND OF ZELDA",
+  levelNumber: "Level II",
+  title: "The legend of Zelda",
   picture: "./images/zelda.jpg",
   mainText1: "The Legend of Zelda is a fantasy action-adventure video game franchise created by Japanese game designers Shigeru Miyamoto and Takashi Tezuka. It is primarily developed and published by Nintendo, although some portable installments and re-releases have been outsourced to Capcom, Vanpool, and Grezzo. The series' gameplay incorporates action-adventure and elements of action RPG games",
   mainText2: "Here we play the main theme from the original NES version!!",
   mainText3: "Enjoy!!",
   successText: "PRINCESS SAVED !! LET's MOVE ON TO THE NEXT LEVEL",
   piece: level2Piece,
+  counter: 199
 
 }
-
-
 
 var level3 =
 
 {
 
-  title: "LEVEL III - BACH TO BACH",
+  levelNumber: "Level III",
+  title: "Bach to Bach",
   picture: "./images/bach.jpg",
   pictureWidth: "80%",
   mainText1: "Johann Sebastian Bach[a] (31 March [O.S. 21 March] 1685 – 28 July 1750) was a German composer and musician of the Baroque period. He is known for instrumental compositions such as the Art of Fugue, the Brandenburg Concertos, and the Goldberg Variations as well as for vocal music such as the St Matthew Passion and the Mass in B minor. Since the 19th-century Bach Revival he has been generally regarded as one of the greatest composers of all time.",
-  mainText2: "This piece is the well-know first prelude in C Minor for the Well-tempered clavier. An absolute classique that everyone loves to listen to",
+  mainText2: "This piece is the well-know first prelude in C Major for the Well-tempered clavier. An absolute classique that everyone loves to listen to",
   maintText3: "You only have to play the first bar here! Have fun!",
   successText: "LEVEL PASSED!!! YOU ARE A MASTER OF BAROQUE MUSIC",
-  piece: level3Piece
+  piece: level3Piece,
+  counter: 199
 }
 
 
@@ -410,13 +413,15 @@ var level4 =
 
 {
 
-  title: "LEVEL IV - THE BEATLES",
+  levelNumber: "Level IV",
+  title: "The Beatles",
   picture: "./images/beatles.jpg",
   mainText1: "The Beatles were an English rock band formed in Liverpool in 1960. The line-up of John Lennon, Paul McCartney, George Harrison and Ringo Starr led the band to be regarded as the foremost and most influential in history.With a sound rooted in skiffle, beat and 1950s rock and roll, the group were integral to the evolution of pop music into an art form, and to the development of the counterculture of the 1960s.",
   mainText2: "Here Comes the Sun is a song written by George Harrison that was first released on the Beatles' 1969 album Abbey Road. Along with 'Something' and 'While My Guitar Gently Weeps', it is one of Harrison's best-known compositions from the Beatles era.",
   mainText3: "Have fun playting this iconic song!!!",
   successText: "YOU MADE THE SUN SHINE TODAY - WELCOME TO LEVEL 48!!",
-  piece: level4Piece
+  piece: level4Piece,
+  counter: 199
 
 
 
@@ -424,7 +429,8 @@ var level4 =
 
 var level5 = {
 
-  title: "LEVEL V - QUEEN",
+  levelNumber: "Level IV",
+  title: "Queen",
   picture: "./images/queen.jpg",
   pictureWidth: "80%",
 
@@ -432,7 +438,8 @@ var level5 = {
   mainText2: "Although critical reaction was initially mixed, 'Bohemian Rhapsody' became Queen's most popular song and is considered one of the greatest rock songs",
   mainText3: "After playing it you should be ready to go on stage!!!",
   successText: "LEVEL PASSED. YOU ROOOOCK, MEET YOU IN WEMBLEY",
-  piece: level5Piece
+  piece: level5Piece,
+  counter: 299
 
 };
 var levels = [level1, level2, level3, level4, level5];

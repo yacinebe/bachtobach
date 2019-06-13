@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
   document.getElementById("piece_button").addEventListener("click", playPiece);
   //document.getElementById("start_button").addEventListener("click", moveToNextLevel);
   pianoSampler = new Tone.Sampler(pianoSample, () => console.log("All samples loaded")).toMaster();
-  console.log(level1);
+  console.log(currentLevel);
   loadLevel(currentLevel);
 
 });
@@ -31,17 +31,38 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function loadLevel(level) {
 
+  if (document.getElementById("level_text")) document.getElementById("level_text").remove();
   if (document.getElementById("title_text")) document.getElementById("title_text").remove();
 
-  title = document.createElement("p");
-  title.id = "title_text";
-  title.textContent = level.title;
-  document.getElementById("banner").insertBefore(title, document.getElementById("buttons_container"));
+  level = document.createElement("p");
+  level.id = "title_text";
+  level.textContent = currentLevel.title;
 
-  document.getElementById("main_picture").src = level.picture;
-  document.getElementById("main_text_1").textContent = level.mainText1;
-  document.getElementById("main_text_2").textContent = level.mainText2;
-  document.getElementById("main_text_3").textContent = level.mainText3;
+  title = document.createElement("p");
+  title.id = "level_text";
+  title.textContent = currentLevel.levelNumber;
+
+  titleAndLevel = document.createElement("div");
+  titleAndLevel.id = "title_and_level";
+
+  document.getElementById("banner").insertBefore(titleAndLevel, document.getElementById("buttons_container"));
+  document.getElementById("title_and_level").append(title);
+  document.getElementById("title_and_level").append(level);
+
+
+
+  // document.getElementById("banner").insertBefore(level, title);
+
+
+  displayTempo();
+
+  document.getElementById("plus").addEventListener("click", increaseTempo);
+  document.getElementById("minus").addEventListener("click", decreaseTempo);
+
+  document.getElementById("main_picture").src = currentLevel.picture;
+  document.getElementById("main_text_1").textContent = currentLevel.mainText1;
+  document.getElementById("main_text_2").textContent = currentLevel.mainText2;
+  document.getElementById("main_text_3").textContent = currentLevel.mainText3;
 
   if (document.getElementsByClassName("outcome")) { [...document.getElementsByClassName("outcome")].forEach(x => x.remove()) };
   if (document.querySelector("#game_outcomes button")) { document.querySelector("#game_outcomes button").remove() };
@@ -49,6 +70,7 @@ function loadLevel(level) {
   if (document.getElementById("footer_bar")) document.getElementById("footer_bar").remove();
   if (document.getElementById("progress_bar")) document.getElementById("progress_bar").remove();
   if (document.getElementsByClassName("message")) [...document.getElementsByClassName("message")].forEach(x => x.remove());
+
 
   pieceIndex = 0;
 
@@ -77,20 +99,29 @@ function loadLevel(level) {
   scoreField.id = "score";
   scoreField.innerHTML = "Score: 0 pts"
 
+  chronoField = document.createElement("footer");
+  chronoField.id = "chrono";
+  chronoField.innerHTML = currentLevel.counter + 1 + " sec";
+
 
   nextNote = document.createElement("footer");
   nextNote.id = "next_note";
   nextNote.innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
 
   footerBar.append(scoreField);
-  // footerBar.append(message);
+
   footerBar.append(nextNote);
+  footerBar.append(chronoField);
   document.getElementById("game_outcomes").append(footerBar);
+
+  loadPiece();
+  startChrono();
 
 }
 
 function moveToNextLevel() {
 
+  stopChrono();
   currentLevelIndex = currentLevelIndex + 1;
   console.log(currentLevelIndex);
   currentLevel = levels[currentLevelIndex];
@@ -156,7 +187,8 @@ function flashKey(key, color, timing) {
   if (color) {
 
     root = document.documentElement;
-    root.style.setProperty('--key-color', color);
+    if (color == "green") root.style.setProperty('--key-color', 'rgb(103, 175, 103)');
+    else if (color == "red") root.style.setProperty('--key-color', 'rgb(255, 0, 74)');
   }
 
   keyToAnimateClasses = document.getElementById(key).classList;
@@ -253,8 +285,6 @@ function displayGameOutcomes(outcome) {
       [...document.getElementsByClassName("progress")].forEach(x => x.remove());
 
     }
-
-
   }
 
 }
@@ -275,7 +305,11 @@ function initializeSound(e) {
 function playSound(note) {
 
   // console.log("Attacking note " + note);
-  Tone.Transport.stop();
+  Tone.Transport.pause();
+
+  //switchFromPlayToPause();
+  //document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
+
   pianoSampler.triggerAttack(convertMusicNotationToSharp(note));
 
 }
@@ -284,13 +318,12 @@ function releaseSound() {
   pianoSampler.triggerRelease();
 }
 
-function playPiece() {
+function loadPiece() {
 
-  if (Tone.context.state !== 'running') {
-    Tone.context.resume();
-  }
+  Tone.Transport.cancel();
+  Tone.Transport.stop();
 
-  //pianoSampler.triggerAttack("C4", "4n");
+  //document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
 
   playSubPieceEvents = [];
 
@@ -302,12 +335,55 @@ function playPiece() {
       console.log("playing note " + convertSharpToMusicNotation(subPiece.note) + " at " + Tone.Transport.seconds);
       pianoSampler.triggerAttackRelease(subPiece.note, subPiece.duration, time);
 
+      if (index == currentLevel.piece.length - 1) {
+        setTimeout(() => console.log("waiting"), 1000); handleEndOfPiece()
+      };
+
     });
+
+
+
 
   });
 
+
+
   currentLevel.piece.forEach((subPiece, index) => Tone.Transport.scheduleOnce(playSubPieceEvents[index], subPiece.time));
-  Tone.Transport.start();
+  //  Tone.Transport.scheduleOnce(handleEndOfPiece, Tone.Time(currentLevel.piece[currentLevel.piece.length - 1].time) + Tone.Time("+8n"));
+
+
+}
+
+function handleEndOfPiece() {
+
+  console.log("handling end of piece at " + Tone.Transport.seconds);
+
+  //  document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
+  Tone.Transport.cancel();
+  loadPiece();
+
+}
+
+
+function playPiece() {
+
+  console.log("From " + Tone.Transport.state);
+
+
+
+  if (Tone.context.state !== 'running') Tone.context.resume();
+
+  if (Tone.Transport.state == "stopped") Tone.Transport.start();
+  else if (Tone.Transport.state == "started") Tone.Transport.pause();
+  else if (Tone.Transport.state == "paused") Tone.Transport.start();
+
+  //if ((document.getElementById("piece_button_image")).src == "http://localhost:3000/images/pause.png") document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
+  //else if ((document.getElementById("piece_button_image")).src == "http://localhost:3000/images/play.png") document.getElementById("piece_button_image").src = "http://localhost:3000/images/pause.png";
+
+
+  console.log("To " + Tone.Transport.state);
+
+
 }
 
 function convertSharpToMusicNotation(note) {
@@ -363,8 +439,6 @@ function compareNotesWithPiece(notePlayed, currentPiece) {
       computeScoreAndMessage(status);
       pieceIndex++;
       displayResults(status, score, message);
-
-
     }
   }
 
@@ -459,6 +533,41 @@ function displayMessage(message, status) {
   /* if ((message != "combo5" && message != "combo10")) document.getElementsByClassName("message")[0].id = status;
   else if (status == "combo5") document.getElementsByClassName("message")[0].id = "combo5";
   else if (status == "combo10") document.getElementsByClassName("message")[0].id = "combo10"; */
+
+}
+
+
+function displayTempo() {
+  document.getElementById("tempo").innerHTML = Tone.Transport.bpm.value.toFixed(0) + " bpm";
+
+}
+
+function increaseTempo() { Tone.Transport.bpm.value = Tone.Transport.bpm.value + 10; displayTempo() }
+function decreaseTempo() { Tone.Transport.bpm.value = Tone.Transport.bpm.value - 10; displayTempo() }
+
+function startChrono() {
+
+
+
+  intervalId = setInterval(() => { displayChrono(currentLevel.counter); currentLevel.counter--; }, 1000);
+
+}
+
+
+function stopChrono() {
+
+  clearInterval(intervalId);
+}
+
+function displayChrono(counter) {
+
+  if (counter >= 0) document.getElementById("chrono").innerHTML = counter + " sec";
+};
+
+function switchFromPlayToPause() {
+
+  if (document.getElementById("piece_button").innerHTML = "Play") document.getElementById("piece_button").innerHTML = "Pause";
+  else if (document.getElementById("piece_button").innerHTML = "Pause") document.getElementById("piece_button").innerHTML = "Play";
 
 }
 

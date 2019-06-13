@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css?family=Encode+Sans+Expanded&display=swap');
-
+@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
 :root {
   
   --key-color:rgb(103, 175, 103);
@@ -13,12 +13,15 @@
   font-family: 'DTNOTED';
   src: url('/fonts/DTNOTED_.TTF');
 
+  font-family: 'moderat';
+  src: url('/fonts/moderat_stylistic_set_01_bold.ttf');
+
 }
 
 * {
 
   box-sizing: border-box;
-  font-family:  'Encode Sans Expanded', sans-serif;
+  font-family:  'moderat'; 
 }
 
 
@@ -31,6 +34,8 @@
   margin: auto;
   grid-template-columns: repeat(3, 1fr);
   grid-template-rows: repeat(6, 1fr);
+  grid-column-gap: 10px;
+  grid-row-gap: 10px;
 
 }
 
@@ -39,24 +44,41 @@
 {
   grid-column: span 3;
   grid-row: span 1; 
-  font-family: 'DTNOTED';
-
-  display: flex;
-  justify-content: space-evenly;
-  align-items: center;
-  background-color: black;
+   display: flex;
+  justify-content: space-between;
+  /*align-items: center; */
+  background-color: #21222A;
   color: white;
-  font-size: 70px;
-  margin-bottom: 10px;
-}
+  
+ 
 
-#banner p
+  }
+
+  #title_and_level
+
+  {
+    display: flex;
+    flex-direction: column;
+      justify-content: center;
+    align-items:flex-start;
+  }
+
+#level_text
 {
 
-  padding-left: 50px;
-  font-family: 'DTNOTED';
+  padding-left: 20px;
   color: white;
-  font-size: 70px;
+  font-size: 20px;
+  margin: 0px 0px 10px 0px;
+
+}
+#title_text
+{
+
+  padding-left: 20px;
+  color: white;
+  font-size: 60px;
+  margin: 5px 0px;
 }
 
 #picture
@@ -66,9 +88,9 @@
   grid-column: span 1;
   grid-row: span 3; 
   display: flex;
-  background-color: black;
+  background-color: #21222A;
   justify-content: center;
-  margin: 0px 0px 10px 0px;
+  margin: 0px 0px 0px 0px;
 
 
 }
@@ -84,10 +106,10 @@
   grid-row: span 3; 
   padding: 0px 30px 10px 30px;
   font-size: 18px;
-  background-image:url("../images/text_container_background.jpg");
-  background-size: 20%;
   background-repeat: no-repeat;
   background-position: 100% 100%;
+  background-color: #21222A;
+  color: white;
 
 }
 
@@ -101,18 +123,89 @@
 
  #buttons_container {
 
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display: grid;
+  grid-template-columns:repeat(4, 1fr);
+  grid-template-rows:repeat(3, 1fr);
+ 
+  padding-right: 30px;
+  column-gap: 5px;
+
+  width: 10%;
+  height: 100px;
+  text-align: right;
+
 } 
+
+#piece_button {
+
+  grid-row:span 1;
+  grid-column:span 4; 
+  padding: 5px;
+  font-size: 16px;
+  width: 80%;
+  background-color: white;
+  border-radius: 10px;
+  color: #21222A;
+  font-weight: bold;
+  margin-top: 14px;
+ 
+
+  
+
+}
+
+#tempo {
+
+  grid-row:span 1;
+  grid-column:span 4; 
+  font-size: 20px;
+  font-family: 'Encode Sans Expanded', sans-serif;
+  padding: 16px 5px 5px 0px;
+  font-size: 16px;
+  font-weight: bold;
+  text-align: left;
+  margin: auto;
+  font-size:16px;
+  
+  
+}
+
+#plus {
+
+  grid-row:span 1;
+  grid-column-start: 2;
+
+  padding: 5px 10px;
+  font-weight: bold;
+ 
+  font-size: 16px;
+  border-radius: 50px;
+
+}
+
+#minus {
+
+  grid-row:span 1;
+  grid-column-start: 3;
+ 
+  padding: 5px 10px;
+  font-weight: bold;
+  margin: auto;
+  font-size: 16px;
+
+  border-radius: 50px;
+
+}
 
 button {
 
-
+  margin: auto;
   font-size: 18px;
-  border-radius: 10px;
   padding: 15px;
   font-weight: bold;
+  
+
+
 }
 
 .inactive
@@ -126,7 +219,7 @@ button {
 .active 
 
 {
-  background-color: black;
+  background-color: #21222A;
   color: white;
 }
 
@@ -137,10 +230,10 @@ button {
   grid-column: span 1;
   grid-row: span 3;
   display: grid;
-  background-color: black;
+  background-color: #21222A;
   grid-template-columns:repeat(15, 1fr);
   grid-template-rows:repeat(8, 1fr);
-  margin: 0px 0px 10px 0px;
+  margin: 0px 0px 0px 0px;
   
 }
 
@@ -155,7 +248,7 @@ button {
   text-align: center;
   font-size: 18px;
   font-weight: bold;
-  border-color: black;
+  border-color: #21222A;
   border-style: solid;
   color: white;
   grid-row: span 1;
@@ -169,7 +262,7 @@ button {
 
   grid-row: span 1;
   grid-column: span 1;
-  background-color: green;
+  background-color:rgb(0, 206, 163);
   margin: 0px;
 
 }
@@ -193,7 +286,7 @@ button {
 #combo5, #combo10 {
 
   animation: slide-in-fwd-center 0.4s cubic-bezier(0.250, 0.460, 0.450, 0.940) both; 
-  background-color: lightgray;
+  /*background-color: lightgray; */
 }
 
 #game_outcomes footer
@@ -203,12 +296,14 @@ button {
   display: flex;
   text-align: center;
   justify-content: center;
-  background-color: red;
-  padding-top: 5px;
+  background-color: color (255, 0, 74);
   text-align: center;
+  align-items: center;
   border-style:solid;
-  border-color: black;
+  border-color: #21222A;
   color: white;
+  background-color:rgb(255, 0, 74);
+  padding: 0px;
 }
 
 
@@ -228,7 +323,7 @@ button {
 
 {
 
-  width: 50%;
+  width: 33%;
 
 }
 
@@ -241,7 +336,7 @@ button {
   display: grid;
   grid-template-columns:repeat(100, 1fr);
   grid-template-rows: 1fr;
-  background-color: beige;
+  background-color:rgb(201, 257, 247);
   margin: 5px;  
 
 }
@@ -249,23 +344,23 @@ button {
 .note_success 
 
 {
-  background-color: green;
+  background-color: rgb(0, 206, 163);
 
 
 }
 
 .note_failure {
 
-  background-color: red;
+  background-color:rgb(255, 0, 74);
 }
 
 .level_success {
 
-  background-color: black;
+  background-color: #21222A;
   grid-row: span 4;
   grid-column: span 15;
   display: flex;
-  font-size: 18px;
+  font-size: 40px;
   align-items: center;
   justify-content: center;
   padding: 15px;
@@ -276,7 +371,8 @@ button {
 
 {
 
-  background-color: black;
+  background-color: #21222A;
+  grid-row-start:3;
   grid-row: span 1;
   grid-column: span 15;
   display: flex;
@@ -296,6 +392,7 @@ button {
   grid-column-start: 3;
   grid-column-end: 14;
   width: auto;
+  font-size: 20px;
 
 }
 
@@ -310,7 +407,7 @@ button {
   border-bottom-style: solid;
   border-left-style: solid;
   border-radius: 3px;
-  background-color: black;
+  background-color: #21222A;
    
 }
 
@@ -323,7 +420,7 @@ button {
   display: grid;
   grid-template-columns: repeat(31, 1fr);
   grid-template-rows: repeat(6, 1fr);
-  background-color: black;
+  background-color: #21222A;
                        
 }
 
@@ -362,7 +459,7 @@ button {
 
 {
 
-  background-color: black;
+  background-color: #21222A;
   grid-column: span 2;
   grid-row: span 4; 
   z-index: 1;

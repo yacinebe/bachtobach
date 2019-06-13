@@ -1,0 +1,89 @@
+@import url('https://fonts.googleapis.com/css?family=Encode+Sans+Expanded&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Nunito&display=swap');
+
+
+@font-face {
+  
+  font-family: 'AlphaMusicMan';
+  src: url('/fonts/AlphaMusicMan.ttf');
+    
+  font-family: 'DTNOTED';
+  src: url('/fonts/DTNOTED_.TTF');
+
+  font-family: 'moderat';
+  src: url('/fonts/moderat_stylistic_set_01_bold.ttf');
+
+}
+
+
+*
+{
+  box-sizing: border-box;
+  font-family:  'moderat';
+  background-color: black;
+
+}
+
+#main_landing_container
+
+{
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: center;
+
+
+
+}
+
+#key
+
+{
+
+  position: absolute;
+}
+
+#title {
+
+  font-size: 80px;
+  color: white;
+}
+
+
+#sub_title {
+
+  font-size: 40px;
+  color: white;
+}
+
+#landing_button_container 
+
+{
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  width: 60%;
+  margin: 100px auto;
+  
+}
+
+button
+{
+  width: 30%;
+  color: white;
+  font-size: 20px;
+  padding: 20px;
+}
+
+#content_section
+
+{
+
+  color: white;
+  font-size: 20px;
+  width: 60%;
+  margin: auto;
+  padding: 20px;
+}
