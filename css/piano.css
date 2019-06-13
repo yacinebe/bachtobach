@@ -451,6 +451,10 @@ button {
   border-radius: 3px;
   background-color: white;
 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end; 
   
 }
 
@@ -502,6 +506,14 @@ button {
 }
 
 #test_zone_time_audio, #test_zone_time_transport { margin: 20px; }
+
+.white_key p
+
+{
+
+  font-size: 10px;
+ /* text-align: center; */
+}
 
 @keyframes heartbeat {
 
