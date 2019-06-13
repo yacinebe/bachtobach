@@ -10,6 +10,7 @@ var scoreLog = [], scoreSheet = [];
 var resultsLog = [];
 var score = 0;
 var message;
+var keyshown = false;
 Tone.Transport.bpm.value = 140;
 
 //Dom initialization
@@ -106,13 +107,16 @@ function loadLevel(level) {
 
   nextNote = document.createElement("footer");
   nextNote.id = "next_note";
-  nextNote.innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
+  nextNote.innerHTML = "Next: " + currentLevel.piece[pieceIndex].note + "<br> Click to show/hide keys";
+  nextNote.addEventListener("click", showKeys);
 
   footerBar.append(scoreField);
 
   footerBar.append(nextNote);
   footerBar.append(chronoField);
   document.getElementById("game_outcomes").append(footerBar);
+
+  showKeys();
 
   loadPiece();
   startChrono();
@@ -163,6 +167,10 @@ function displayPiano(numberOfOctaves, startKey, endKey) {
 function reactToMouseDown(evt) {
 
   pressedKey = evt.target;
+
+  if (evt.target.id == "B6") moveToNextLevel();
+  if (evt.target.id == "C2") moveToLowerLevel();
+
   playSound(convertSharpToMusicNotation(evt.target.id));
   compareNotesWithPiece(pressedKey.id, currentLevel.piece);
 
@@ -172,6 +180,8 @@ function reactToMouseDown(evt) {
   keyPlayed.duration = null;
   keyPlayed.time = null;
   keyLogger.push(keyPlayed);
+
+
 
 }
 
@@ -499,7 +509,7 @@ function displayResults(status, score, message) {
   displayGameOutcomes(status);
   displayScore(score);
   displayMessage(message, status);
-  document.getElementById("next_note").innerHTML = "Next: " + currentLevel.piece[pieceIndex].note;
+  document.getElementById("next_note").innerHTML = "Next: " + currentLevel.piece[pieceIndex].note + "<br> Click to show/hide keys";
 
 }
 
@@ -561,7 +571,7 @@ function stopChrono() {
 
 function displayChrono(counter) {
 
-  if (counter >= 0) document.getElementById("chrono").innerHTML = counter + " sec";
+  if ((counter >= 0) && document.getElementById("chrono")) document.getElementById("chrono").innerHTML = counter + " sec";
 };
 
 function switchFromPlayToPause() {
@@ -572,3 +582,30 @@ function switchFromPlayToPause() {
 }
 
 
+function showKeys() {
+
+
+  if (!keyshown) {
+    [...document.getElementsByClassName("white_key")].forEach((x) => {
+
+      note = x.id;
+      noteToAdd = document.createElement("p");
+      noteToAdd.textContent = note;
+      x.append(noteToAdd);
+      keyshown = true;
+
+    });
+  }
+
+  else if (keyshown) {
+
+
+    [...document.getElementsByClassName("white_key")].forEach((x) => { x.innerHTML = ""; });
+    keyshown = false;
+
+  }
+
+
+
+
+}
