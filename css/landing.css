@@ -5,13 +5,13 @@
 @font-face {
   
   font-family: 'AlphaMusicMan';
-  src: url('./fonts/AlphaMusicMan.ttf');
+  src: url("../fonts/AlphaMusicMan.ttf");
     
   font-family: 'DTNOTED';
-  src: url('./fonts/DTNOTED_.TTF');
+  src: url("../fonts/DTNOTED_.TTF");
 
   font-family: 'moderat';
-  src: url('./fonts/moderat_stylistic_set_01_bold.ttf');
+  src: url("../fonts/moderat_stylistic_set_01_bold.ttf");
 
 }
 
