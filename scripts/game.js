@@ -170,8 +170,8 @@ function reactToMouseDown(evt) {
 
   pressedKey = evt.target;
 
-  if (evt.target.id == "B6") moveToNextLevel();
-  if (evt.target.id == "C2") moveToLowerLevel();
+  if (evt.target.id == "B6") { score = 1; moveToNextLevel(); }
+  if (evt.target.id == "C2") { score = 1; moveToLowerLevel(); }
 
   playSound(convertSharpToMusicNotation(evt.target.id));
   compareNotesWithPiece(pressedKey.id, currentLevel.piece);

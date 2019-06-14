@@ -368,7 +368,7 @@ var level1 = {
   mainText3: "Make sure to sing along!",
   successText: "Well Done! Brother John is now awake... You pass to the next level",
   piece: level1Piece,
-  counter: 9
+  counter: 199
 
 }
 
