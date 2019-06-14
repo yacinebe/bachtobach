@@ -32,6 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
 function loadLevel(level) {
 
+
+
   if (document.getElementById("level_text")) document.getElementById("level_text").remove();
   if (document.getElementById("title_text")) document.getElementById("title_text").remove();
 
@@ -317,7 +319,9 @@ function playSound(note) {
   // console.log("Attacking note " + note);
   Tone.Transport.pause();
 
-  //switchFromPlayToPause();
+  if (document.getElementById("piece_button").innerHTML = "Pause") togglePlayToPause();
+
+  //if (document.getElementById("piece_button").innerHTML == "Pause") document.getElementById("piece_button").innerHTML == "Play";
   //document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
 
   pianoSampler.triggerAttack(convertMusicNotationToSharp(note));
@@ -332,6 +336,7 @@ function loadPiece() {
 
   Tone.Transport.cancel();
   Tone.Transport.stop();
+  document.getElementById("piece_button").innerHTML = "Play";
 
   //document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
 
@@ -369,6 +374,7 @@ function handleEndOfPiece() {
   console.log("handling end of piece at " + Tone.Transport.seconds);
 
   //  document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
+  document.getElementById("piece_button").innerHTML = "Play";
   Tone.Transport.cancel();
   loadPiece();
 
@@ -386,6 +392,9 @@ function playPiece() {
   if (Tone.Transport.state == "stopped") Tone.Transport.start();
   else if (Tone.Transport.state == "started") Tone.Transport.pause();
   else if (Tone.Transport.state == "paused") Tone.Transport.start();
+
+  if (document.getElementById("piece_button").innerHTML == "Play") { console.log("Playing"); document.getElementById("piece_button").innerHTML = "Pause"; }
+  else if (document.getElementById("piece_button").innerHTML == "Pause") { console.log("Pausing"); document.getElementById("piece_button").innerHTML = "Play"; }
 
   //if ((document.getElementById("piece_button_image")).src == "http://localhost:3000/images/pause.png") document.getElementById("piece_button_image").src = "http://localhost:3000/images/play.png";
   //else if ((document.getElementById("piece_button_image")).src == "http://localhost:3000/images/play.png") document.getElementById("piece_button_image").src = "http://localhost:3000/images/pause.png";
@@ -574,10 +583,10 @@ function displayChrono(counter) {
   if ((counter >= 0) && document.getElementById("chrono")) document.getElementById("chrono").innerHTML = counter + " sec";
 };
 
-function switchFromPlayToPause() {
+function togglePlayToPause() {
 
-  if (document.getElementById("piece_button").innerHTML = "Play") document.getElementById("piece_button").innerHTML = "Pause";
-  else if (document.getElementById("piece_button").innerHTML = "Pause") document.getElementById("piece_button").innerHTML = "Play";
+  if (document.getElementById("piece_button").innerHTML == "Play") document.getElementById("piece_button").innerHTML = "Pause";
+  else if (document.getElementById("piece_button").innerHTML == "Pause") document.getElementById("piece_button").innerHTML = "Play";
 
 }
 

@@ -11,7 +11,7 @@ document.addEventListener("DOMContentLoaded", function () {
   document.getElementById("about").addEventListener("click", () => {
 
 
-    document.getElementById("content_section").innerHTML = 'This game is developed by Yacine Berrada as part of the IronHach curriculum. Feel free to share. You can follow me on github <a href="http://www.github.com/yacinebe"> here <a>'
+    document.getElementById("content_section").innerHTML = 'This game is developed by Yacine Berrada as part of the Iron Hack curriculum. Feel free to share. You can follow me on github <a href="http://www.github.com/yacinebe"> here <a>'
 
   });
 

@@ -330,8 +330,10 @@ button {
   grid-row-start: 8;
   grid-column-start: 1;
   grid-column-end: 16;
-  justify-content: space-between;
+  justify-content: center;
   display: flex;
+ /* margin-right: 2px;
+  margin-right: 2px; */
 
 }
 
@@ -340,6 +342,8 @@ button {
 {
 
   width: 33%;
+  margin-bottom: 2px;
+    
 
 }
 
