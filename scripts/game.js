@@ -199,7 +199,7 @@ function flashKey(key, color, timing) {
   if (color) {
 
     root = document.documentElement;
-    if (color == "green") root.style.setProperty('--key-color', 'rgb(103, 175, 103)');
+    if (color == "green") root.style.setProperty('--key-color', 'rgb(203, 175, 103)');
     else if (color == "red") root.style.setProperty('--key-color', 'rgb(255, 0, 74)');
   }
 

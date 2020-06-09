@@ -355,7 +355,7 @@ var level5Piece = [
 
 //pieces.push(level1Piece);
 
-var level1 = {
+var level3 = {
 
   levelNumber: "Level I",
   title: "Brother John",
@@ -390,7 +390,7 @@ var level2 =
 
 }
 
-var level3 =
+var level1 =
 
 {
 
