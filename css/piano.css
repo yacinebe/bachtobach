@@ -453,7 +453,7 @@ button {
   grid-row: span 6; 
   border-right-style: solid;
   border-radius: 3px;
-  background-color: beige;
+  background-color: white;
 
   display: flex;
   flex-direction: column;
