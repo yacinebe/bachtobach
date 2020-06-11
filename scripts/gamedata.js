@@ -395,7 +395,7 @@ var level1 =
 {
 
   levelNumber: "Level III",
-  title: "Bach to Bach revisited",
+  title: "Bach to Bach for vector training",
   picture: "./images/bach.jpg",
   pictureWidth: "80%",
   mainText1: "Johann Sebastian Bach[a] (31 March [O.S. 21 March] 1685 – 28 July 1750) was a German composer and musician of the Baroque period. He is known for instrumental compositions such as the Art of Fugue, the Brandenburg Concertos, and the Goldberg Variations as well as for vocal music such as the St Matthew Passion and the Mass in B minor. Since the 19th-century Bach Revival he has been generally regarded as one of the greatest composers of all time.",
