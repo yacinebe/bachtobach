@@ -442,7 +442,7 @@ var level5 = {
   counter: 299
 
 };
-var levels = [level1, level2, level3, level4, level5];
+var levels = [level3, level2, level1, level4, level5];
 
 //Outcomes
 
