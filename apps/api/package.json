@@ -3,21 +3,17 @@
   "version": "0.0.1",
   "private": true,
   "scripts": {
-    "dev": "tsx watch src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "type-check": "tsc --noEmit"
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "seed": "node src/seed.js"
   },
   "dependencies": {
-    "@bachtobach/types": "*",
+    "@bachtobach/game-engine": "*",
     "@fastify/cors": "^9.0.0",
     "@fastify/jwt": "^8.0.0",
+    "@fastify/static": "^7.0.0",
+    "bcryptjs": "^2.4.3",
     "fastify": "^4.27.0",
     "pg": "^8.11.0"
-  },
-  "devDependencies": {
-    "@types/pg": "^8.11.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.4.0"
   }
 }

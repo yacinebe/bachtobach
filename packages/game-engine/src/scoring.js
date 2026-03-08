@@ -1,5 +1,3 @@
-import type { NoteResult } from "./comparator";
-
 const PERFECT_WINDOW_MS = 50;
 const GOOD_WINDOW_MS = 150;
 
@@ -7,26 +5,22 @@ const PERFECT_POINTS = 300;
 const GOOD_POINTS = 100;
 const MISS_POINTS = 0;
 
-export interface ScoreState {
-  score: number;
-  combo: number;
-  comboMax: number;
-  hits: number;
-  misses: number;
-  accuracy: number;
-}
-
-export function calcNoteScore(result: NoteResult): number {
+/**
+ * @param {{ hit: boolean, latencyMs: number }} result
+ * @returns {number}
+ */
+function calcNoteScore(result) {
   if (!result.hit) return MISS_POINTS;
   if (result.latencyMs <= PERFECT_WINDOW_MS) return PERFECT_POINTS;
   if (result.latencyMs <= GOOD_WINDOW_MS) return GOOD_POINTS;
   return MISS_POINTS;
 }
 
-export function applyNoteResult(
-  state: ScoreState,
-  result: NoteResult
-): ScoreState {
+/**
+ * @param {{ score, combo, comboMax, hits, misses, accuracy }} state
+ * @param {{ hit: boolean, latencyMs: number }} result
+ */
+function applyNoteResult(state, result) {
   const points = calcNoteScore(result);
   const hit = points > 0;
   const combo = hit ? state.combo + 1 : 0;
@@ -43,6 +37,8 @@ export function applyNoteResult(
   };
 }
 
-export function initialScoreState(): ScoreState {
+function initialScoreState() {
   return { score: 0, combo: 0, comboMax: 0, hits: 0, misses: 0, accuracy: 0 };
 }
+
+module.exports = { calcNoteScore, applyNoteResult, initialScoreState };

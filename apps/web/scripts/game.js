@@ -3,7 +3,8 @@
 var pianoSampler, part, notesPlayed;
 var keyLogger = [];
 var currentLevelIndex = 0;
-var currentLevel = levels[currentLevelIndex];
+var currentLevel = null;
+var levels = [];
 var pieceIndex = 0;
 var microDelay = true;
 var scoreLog = [], scoreSheet = [];
@@ -15,14 +16,16 @@ Tone.Transport.bpm.value = 140;
 
 //Dom initialization
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
 
   displayPiano(5);
   document.getElementById("piano").addEventListener("mousedown", reactToMouseDown);
   document.getElementById("piano").addEventListener("mouseup", reactToMouseUp);
   document.getElementById("piece_button").addEventListener("click", playPiece);
-  //document.getElementById("start_button").addEventListener("click", moveToNextLevel);
   pianoSampler = new Tone.Sampler(pianoSample, () => console.log("All samples loaded")).toMaster();
+
+  levels = await fetchLevels();
+  currentLevel = levels[currentLevelIndex];
   console.log(currentLevel);
   loadLevel(currentLevel);
 
