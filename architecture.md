@@ -2,6 +2,26 @@
 
 ---
 
+## Technology Stack
+
+| Layer | Technology |
+|---|---|
+| **Frontend (Web)** | React, Vanilla JS (current) |
+| **Frontend (Mobile)** | React Native (iOS + Android) |
+| **Audio engine** | Tone.js |
+| **Audio samples** | 88-key piano samples (MP3 / OGG) |
+| **Backend API** | Node.js · Fastify |
+| **Database** | PostgreSQL |
+| **Cache / Sessions** | Redis |
+| **File storage** | S3 + CloudFront |
+| **Auth** | JWT + Refresh Tokens · Apple Sign-In · Google Sign-In |
+| **Monorepo tooling** | Turborepo |
+| **Shared types** | TypeScript |
+| **Sheet music parsing** | MusicXML · MIDI · Audiveris (OMR) · Claude Vision API |
+| **Job queue** | AWS SQS |
+
+---
+
 ## Target Architecture
 
 ```mermaid
