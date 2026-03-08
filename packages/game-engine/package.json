@@ -1,0 +1,16 @@
+{
+  "name": "@bachtobach/game-engine",
+  "version": "0.0.1",
+  "private": true,
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "type-check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@bachtobach/types": "*"
+  },
+  "devDependencies": {
+    "typescript": "^5.4.0"
+  }
+}
