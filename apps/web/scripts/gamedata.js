@@ -106,7 +106,11 @@ outcomes.levelPassedWithPerfect = { className: "level_success" };
 
 // ─── API integration ──────────────────────────────────────────────────────────
 
-var API_URL = "http://localhost:3001";
+// In production the frontend is served by the same server, so use same-origin.
+// In local dev (localhost) point directly at the API port.
+var API_URL = (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1")
+  ? "http://localhost:3001"
+  : "";
 
 /**
  * Convert an API level into the shape game.js expects:
