@@ -24,6 +24,8 @@ export interface Level {
   difficulty: 1 | 2 | 3 | 4 | 5;
   time_limit_seconds: number;
   piece: Note[];
+  description: string[];
+  success_text: string;
   source?: string;
   created_at: string;
 }
