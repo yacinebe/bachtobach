@@ -1,12 +1,12 @@
-import Fastify, { FastifyReply, FastifyRequest } from "fastify";
-import fastifyCors from "@fastify/cors";
-import fastifyJwt from "@fastify/jwt";
+const Fastify = require("fastify");
+const fastifyCors = require("@fastify/cors");
+const fastifyJwt = require("@fastify/jwt");
 
-import authRoutes    from "./routes/auth";
-import levelRoutes   from "./routes/levels";
-import scoreRoutes   from "./routes/scores";
-import progressRoutes from "./routes/progress";
-import meRoutes      from "./routes/me";
+const authRoutes     = require("./routes/auth");
+const levelRoutes    = require("./routes/levels");
+const scoreRoutes    = require("./routes/scores");
+const progressRoutes = require("./routes/progress");
+const meRoutes       = require("./routes/me");
 
 const app = Fastify({ logger: true });
 
@@ -18,16 +18,13 @@ app.register(fastifyJwt, {
 });
 
 // ─── Auth decorator used by protected routes ──────────────────────────────────
-app.decorate(
-  "authenticate",
-  async function (req: FastifyRequest, reply: FastifyReply) {
-    try {
-      await req.jwtVerify();
-    } catch {
-      reply.code(401).send({ error: "Unauthorized" });
-    }
+app.decorate("authenticate", async function (req, reply) {
+  try {
+    await req.jwtVerify();
+  } catch {
+    reply.code(401).send({ error: "Unauthorized" });
   }
-);
+});
 
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.get("/health", async () => ({ status: "ok" }));

@@ -1,24 +1,9 @@
 /**
  * Seed the levels table from @bachtobach/game-engine.
- * Run once:  npx tsx src/seed.ts
+ * Run once:  node src/seed.js
  */
-import { pool } from "./db";
-
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { levels } = require("@bachtobach/game-engine") as {
-  levels: Array<{
-    levelNumber: number;
-    title: string;
-    composer: string;
-    image: string;
-    bpm: number;
-    difficulty: number;
-    timeLimitSeconds: number;
-    piece: unknown[];
-    description: string[];
-    successText: string;
-  }>;
-};
+const { pool } = require("./db");
+const { levels } = require("@bachtobach/game-engine");
 
 async function seed() {
   console.log(`Seeding ${levels.length} levels…`);

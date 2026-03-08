@@ -1,25 +1,16 @@
-import { FastifyInstance } from "fastify";
-import { pool } from "../db";
-import type { Progress } from "@bachtobach/types";
+const { pool } = require("../db");
 
-export default async function progressRoutes(app: FastifyInstance) {
+async function progressRoutes(app) {
   // POST /progress — upsert; user_id from JWT
-  app.post<{
-    Body: {
-      level_id: string;
-      completed: boolean;
-      perfect: boolean;
-      score: number;
-    };
-  }>("/progress", { preHandler: [app.authenticate] }, async (req, reply) => {
+  app.post("/progress", { preHandler: [app.authenticate] }, async (req, reply) => {
     const { level_id, completed, perfect, score } = req.body;
-    const user_id = (req.user as { sub: string }).sub;
+    const user_id = req.user.sub;
 
     if (!level_id) {
       return reply.code(400).send({ error: "level_id is required" });
     }
 
-    const { rows } = await pool.query<Progress>(
+    const { rows } = await pool.query(
       `INSERT INTO progress (user_id, level_id, completed, perfect, best_score, attempts, last_played_at)
        VALUES ($1, $2, $3, $4, $5, 1, NOW())
        ON CONFLICT (user_id, level_id) DO UPDATE SET
@@ -35,3 +26,5 @@ export default async function progressRoutes(app: FastifyInstance) {
     return reply.code(201).send(rows[0]);
   });
 }
+
+module.exports = progressRoutes;
