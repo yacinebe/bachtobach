@@ -2,10 +2,22 @@ const { Pool } = require("pg");
 const fs = require("fs");
 const path = require("path");
 
+// ECS passes individual DB_* vars from Secrets Manager.
+// Locally and on Railway, DATABASE_URL is used directly.
+function buildConnectionString() {
+  if (process.env.DATABASE_URL) return process.env.DATABASE_URL;
+  if (process.env.DB_HOST) {
+    const { DB_USER, DB_PASSWORD, DB_HOST, DB_PORT = "5432", DB_NAME = "bachtobach" } = process.env;
+    return `postgres://${DB_USER}:${DB_PASSWORD}@${DB_HOST}:${DB_PORT}/${DB_NAME}`;
+  }
+  return "postgres://postgres:postgres@127.0.0.1:5432/bachtobach";
+}
+
 const pool = new Pool({
-  connectionString:
-    process.env.DATABASE_URL ?? "postgres://postgres:postgres@127.0.0.1:5432/bachtobach",
-  ssl: process.env.DATABASE_URL ? { rejectUnauthorized: false } : false,
+  connectionString: buildConnectionString(),
+  ssl: (process.env.DATABASE_URL || process.env.DB_HOST)
+    ? { rejectUnauthorized: false }
+    : false,
 });
 
 async function initDb() {
